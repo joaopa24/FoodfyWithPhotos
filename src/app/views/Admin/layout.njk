@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% block head %}
+            <link rel="stylesheet" href="/admin.css">
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto&display=swap">
+            <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        {% endblock %}
+
+    </head>
+    <body>
+        <header>
+            <div class="logo">
+                <a href="/admin/Receitas/"><img src="/assets/logod.png" alt=""></a>
+                <div class="linksadmin">
+                    <a href="/admin/Receitas">Receitas</a>
+                    <a href="/admin/Chefs">Chefs</a>
+                </div>
+            </div>
+
+        </header>
+        {% block content %}
+            {% endblock%}
+            <script src="/script_header_admin.js"></script>
+        </body>
+    </html>

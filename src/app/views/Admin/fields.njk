@@ -1,0 +1,69 @@
+<div class="fields">
+    <div class="item">
+        <p>Imagem da Receita</p>
+        <div>
+            <input type="text" name="image" value="{{recipe.image}}">
+        </div>
+    </div>
+    <div class="item">
+        <p>Nome da Receita</p>
+        <div>
+            <input type="text" name="title" value="{{recipe.title}}">
+        </div>
+    </div>
+    <div class="item">
+        <p>Autor</p>
+        <div>
+            <select name="chef">
+                {% for chef in chefsOptions %}
+                    <option value="{{ chef.id }}" {% if recipe.chef_id == chef.id %} selected{% endif %}>{{chef.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+    <div class="item">
+        <p>Ingredientes</p>
+        <div class="ingredients">
+            {% if recipe.ingredients %}
+                {% for ingredient in recipe.ingredients %}
+                    <div class="ingredient">
+                        <input type="text" name="ingredients[]" value="{{ingredient}}">
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="ingredient">
+                    <input type="text" name="ingredients[]" value="">
+                </div>
+            {% endif %}
+        </div>
+        <div class="content_add">
+            <a class="add_ingredient">Adicionar novo ingrediente</a>
+        </div>
+    </div>
+    <div class="item">
+        <p>Modo de preparo</p>
+        <div class="preparations">
+            {% if recipe.preparation %}
+                {% for preparation in recipe.preparation %}
+                    <div class="preparation">
+                        <input type="text" name="preparation[]" value="{{preparation}}">
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="preparation">
+                    <input type="text" name="preparation[]" value="">
+                </div>
+            {% endif %}
+        </div>
+        <div class="content_add">
+            <a class="add_preparation">Adicionar novo passo</a>
+        </div>
+    </div>
+    <div class="item">
+        <p>Informações adicionais</p>
+        <div>
+            <textarea name="textarea" cols="100%" rows="10" value="{{recipe.information}}">{{recipe.information}}</textarea>
+        </div>
+    </div>
+</div>
+<script src="/script_admin.js"></script>

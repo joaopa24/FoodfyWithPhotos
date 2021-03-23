@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% block head %}
+            <link rel="stylesheet" href="/style.css">
+            <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+        {% endblock %}
+    </head>
+    <body>
+        <header>
+                <a href="/"><img src="/assets/logo.png" alt=""></a>
+                <div class="Pages">
+                    <a href="/Sobre">Sobre</a>
+                    <a href="/Receitas">Receitas</a>
+                    <a href="/Chefs">Chefs</a>
+                </div>
+
+                <form action="/Resultados" method="GET">
+                <input type="text" name="filter" placeholder="Buscar uma receita" value="{{ filter }}">
+                <button type="submit">Buscar</button>
+                
+                </form>
+        </header>
+        {% block content %}
+        {% endblock %}
+         <script src="/script_header.js"></script>
+        <div class="footer">
+            <p>Todos diretos reservados,receitas Foodfy</p>
+        </div>
+    </body>
+</html>
