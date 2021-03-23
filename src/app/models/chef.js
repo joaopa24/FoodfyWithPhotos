@@ -2,49 +2,31 @@ const db = require('../../config/db')
 const { date } = require('../../lib/utils')
 
 module.exports = {
-    all(callback){
-       db.query(`
+    all(){
+       return db.query(`
        SELECT chefs.*, count(recipes) AS total_recipes
        FROM chefs 
        LEFT JOIN recipes ON (recipes.chef_id = chefs.id)
        GROUP BY chefs.id
        ORDER BY total_recipes DESC
-       
-       `, function(err, results){
-           if(err) throw `${err}`
-
-           callback(results.rows)
-       })   
+       `)
     },
-    allrecipes(callback){
-        db.query(`SELECT * FROM recipes`, function(err , results){
-            if(err) throw `Database ${err}`
-            
-            callback(results.rows)
-        })
+    allrecipes(){
+        return db.query(`SELECT * FROM recipes`)
     },
-    findrecipes(callback){
-        db.query(`
+    findrecipes(){
+        return db.query(`
         SELECT chefs.*, COUNT (recipes) AS total_recipes
         FROM chefs
         LEFT JOIN recipes ON (chefs.id = recipes.chef_id)
         GROUP BY chefs.id
         
-        `,function(err , results){
-            if(err) throw `${err}`
- 
-            callback(results.rows)
-        })
+        `)
      },
-    find(id, callback){
-       db.query(`SELECT chefs.* FROM chefs WHERE id = $1
-       `, [id],function(err , results){
-           if(err) throw `${err}`
-
-           callback(results.rows[0])
-       })
+    find(id){
+       return db.query(`SELECT chefs.* FROM chefs WHERE id = $1`, [id])
     },
-    create(data , callback){
+    create(data){
         const query = `
         INSERT INTO chefs(
             avatar_url,
@@ -60,13 +42,9 @@ module.exports = {
             date(Date.now()).iso
         ]
 
-        db.query(query , values, function(err , results){
-            if(err) throw `${err}`
-            
-            callback(results.rows[0])
-        })
+        return db.query(query , values)
     },
-    update(data , callback){
+    update(data){
         const query = `
         UPDATE chefs SET 
             avatar_url=($1),
@@ -82,17 +60,9 @@ module.exports = {
             data.id
         ]
 
-        db.query(query , values, function(err , results){
-            if(err) throw `${err}`
-            
-            callback(results.rows[0])
-        })
+        return db.query(query , values)
     },
-    delete(id, callback){
-        db.query(`DELETE FROM chefs WHERE id = $1`, [id],function(err , results){
-            if(err) throw `${err}`
- 
-            return callback()
-        })
+    delete(id){
+        return db.query(`DELETE FROM chefs WHERE id = $1`, [id])
     }
 }
