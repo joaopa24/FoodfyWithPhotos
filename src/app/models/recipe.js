@@ -2,29 +2,23 @@ const db = require('../../config/db')
 const { date , feature } = require("../../lib/utils")
 
 module.exports = {
-    all(callback){
-        db.query(`SELECT * FROM recipes`, function(err , results){
-            if(err) throw `Database ${err}`
-            
-            callback(results.rows)
-        })
+    all(){
+        return db.query(`SELECT * FROM recipes`)
     },
-    create(data , callback){
+    create(data){
         const query = `
            INSERT INTO recipes(
                chef_id,
-               image,
                title,
                ingredients,
                preparation,
                information,
                created_at
-           ) VALUES ($1, $2, $3, $4, $5, $6, $7)
+           ) VALUES ($1, $2, $3, $4, $5, $6)
              RETURNING id
         `
         const values = [
                data.chef_id, 
-               data.image,
                data.title,
                data.ingredients,
                data.preparation,
@@ -32,41 +26,27 @@ module.exports = {
                date(Date.now()).iso,
         ]
 
-        db.query(query , values ,function(err , results) {
-            if(err) throw `Database ${err}`
-
-            callback(results.rows[0])
-        })
+        return db.query(query , values)
     },
-    find(id , callback){
-        db.query(`SELECT * FROM recipes WHERE id = $1`, [id], function(err , results){
-            if(err) throw `Database ${err}`
-
-            callback(results.rows[0])
-        })
+    find(id){
+        return db.query(`SELECT * FROM recipes WHERE id = $1`, [id])
     },
-    chefsOption(callback){
-        db.query(`SELECT name, id FROM chefs`, function(err,results){
-            if(err) throw `${err}`
-
-            callback(results.rows)
-        })   
+    chefsOption(){
+        return db.query(`SELECT name, id FROM chefs`)
     },
-    update(data , callback){
+    update(data){
         const query = `
         UPDATE recipes SET 
             chef_id=($1),
-            image=($2),
-            title=($3),
-            ingredients=($4),
-            preparation=($5),
-            information=($6),
-            created_at=($7)
-            WHERE id = $8
+            title=($2),
+            ingredients=($3),
+            preparation=($4),
+            information=($5),
+            created_at=($6)
+            WHERE id = $7
      `
      const values = [
             data.chef, 
-            data.image,
             data.title,
             data.ingredients,
             data.preparation,
@@ -75,11 +55,7 @@ module.exports = {
             data.id
      ] 
 
-     db.query(query , values ,function(err , results) {
-         if(err) throw `Database ${err}`
-
-         callback(results.rows[0])
-     })
+     return db.query(query , values)
     },
     paginate(params){
             const { filter , limit, offset, callback } = params
@@ -108,10 +84,6 @@ module.exports = {
             LIMIT $1 OFFSET $2 
             `
             
-            db.query(query, [limit,offset], function(err,results){
-                 if(err) throw `Database Error ${err}`
-                
-                 callback(results.rows)
-            })
+            return db.query(query, [limit,offset])
     }
 }
