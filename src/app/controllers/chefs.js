@@ -1,15 +1,22 @@
-const chef = require("../models/chef")
 const Chef = require("../models/chef")
 
 module.exports = {
     chefs(req, res) {
-        Chef.all(function (Chefs) {
+        Chef.all()
+        .then(function(results){
+            const Chefs = results.rows
             return res.render("chef", { Chefs })
+        }).catch(function(err){
+            throw new Error(err)
         })
     },
     chefsAdmin(req, res) {
-        Chef.all(function (Chefs) {
-            return res.render('Admin/chefs', { Chefs })
+        Chef.all()
+        .then(function(results){
+            const Chefs = results.rows
+            return res.render("Admin/chefs", { Chefs })
+        }).catch(function(err){
+            throw new Error(err)
         })
     },
     chefAdmin(req, res) {
