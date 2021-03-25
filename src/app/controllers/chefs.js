@@ -19,38 +19,43 @@ module.exports = {
             throw new Error(err)
         })
     },
-    chefAdmin(req, res) {
-        const { id } = req.params
+    async chefAdmin(req, res) {
+        // get count of recipes 
+        let results = await Chef.findrecipes()
+        const chef_recipes = results.rows
+        
+        // get All recipes 
+        results = await Chef.allrecipes()
+        const recipes = results.rows
 
-        Chef.findrecipes(function (chef_recipes) {
-            Chef.allrecipes(function (recipes) {
-                Chef.find(id, function (Chef) {
-                    return res.render('Admin/chef', { Chef, chef_recipes, recipes })
-                })
-            })
-        })
+        // find Chef
+        results = await Chef.find(req.params.id)
+        const Chef = results.rows[0]
 
+        return res.render('Admin/chef', { Chef, chef_recipes, recipes })
     },
-    chefAdmin_edit(req, res) {
-        const { id } = req.params
-        Chef.find(id, function (Chef) {
-            return res.render('Admin/editchef', { Chef })
-        })
+    async chefAdmin_edit(req, res) {
+        let results = await Chef.find(req.params.id)
+        const Chef = results.rows[0]
+        
+        return res.render('Admin/editchef', { Chef })
     },
     chefsCreate(req, res) {
         return res.render('Admin/createChef')
     },
-    post(req, res) {
+    async post(req, res) {
         const keys = Object.keys(req.body)
+
         for (key of keys) {
             if (req.body[key] == "") {
                 return res.send("Preencha todos os campos!")
             }
         }
-
-        Chef.create(req.body, function (Chef) {
-            return res.redirect(`/admin/Chefs/${Chef.id}`)
-        })
+        
+        let results = await Chef.create(req.body)
+        const chefId = results.rows[0].id
+        
+        return res.redirect(`/admin/Chefs/${chefId}`)
     },
     put(req, res) {
         const keys = Object.keys(req.body)
@@ -70,5 +75,4 @@ module.exports = {
             return res.redirect("/admin/Chefs")
         })
     }
-
 }
