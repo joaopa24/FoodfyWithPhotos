@@ -20,17 +20,21 @@ module.exports = {
         })
     },
     async chefAdmin(req, res) {
+        
+        console.log(req.params.id)
+        // find Chef
+        let results = await Chef.find(req.params.id)
+        const Chef = results.rows[0]
+        
+        if (!Chef) return res.send("Chef não encontrado!")
+        
         // get count of recipes 
-        let results = await Chef.findrecipes()
+        results = await Chef.findrecipes()
         const chef_recipes = results.rows
         
         // get All recipes 
         results = await Chef.allrecipes()
         const recipes = results.rows
-
-        // find Chef
-        results = await Chef.find(req.params.id)
-        const Chef = results.rows[0]
 
         return res.render('Admin/chef', { Chef, chef_recipes, recipes })
     },
@@ -57,22 +61,23 @@ module.exports = {
         
         return res.redirect(`/admin/Chefs/${chefId}`)
     },
-    put(req, res) {
+    async put(req, res) {
         const keys = Object.keys(req.body)
+
         for (key of keys) {
             if (req.body[key] == "") {
                 return res.send("Preencha todos os campos!")
             }
         }
-        console.log(req.body.id)
+        
+        let results = await Chef.update(req.body)
+        const chefId = results.rows[0].id
 
-        Chef.update(req.body, function () {
-            return res.redirect(`/admin/Chefs/${req.body.id}`)
-        })
+        return res.redirect(`/admin/Chefs/${chefId}`)
     },
-    delete(req, res) {
-        Chef.delete(req.body.id, function () {
-            return res.redirect("/admin/Chefs")
-        })
+    async delete(req, res) {
+        await Product.delete(req.body.id)
+
+        return res.redirect("/admin/Chefs")
     }
 }
