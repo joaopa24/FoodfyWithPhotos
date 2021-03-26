@@ -1,4 +1,3 @@
-const chef = require("../models/chef")
 const Chef = require("../models/chef")
 
 module.exports = {
