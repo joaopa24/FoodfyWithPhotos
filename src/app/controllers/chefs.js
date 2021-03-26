@@ -1,3 +1,4 @@
+const chef = require("../models/chef")
 const Chef = require("../models/chef")
 
 module.exports = {
@@ -20,29 +21,23 @@ module.exports = {
         })
     },
     async chefAdmin(req, res) {
-        
-        console.log(req.params.id)
-        // find Chef
-        let results = await Chef.find(req.params.id)
-        const Chef = results.rows[0]
-        
-        if (!Chef) return res.send("Chef não encontrado!")
-        
-        // get count of recipes 
+    
+        results = await Chef.find(req.params.id).then()
+        const chef = results.rows[0] // Não colocar Chef porque buga , já que é o mesmo que o Chef do model
+    
         results = await Chef.findrecipes()
         const chef_recipes = results.rows
-        
-        // get All recipes 
+ 
         results = await Chef.allrecipes()
         const recipes = results.rows
 
-        return res.render('Admin/chef', { Chef, chef_recipes, recipes })
+        return res.render('Admin/chef', { Chef: chef, chef_recipes, recipes })
     },
     async chefAdmin_edit(req, res) {
         let results = await Chef.find(req.params.id)
-        const Chef = results.rows[0]
+        const chef = results.rows[0]
         
-        return res.render('Admin/editchef', { Chef })
+        return res.render('Admin/editchef', { Chef: chef })
     },
     chefsCreate(req, res) {
         return res.render('Admin/createChef')
