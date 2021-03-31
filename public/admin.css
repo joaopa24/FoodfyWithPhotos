@@ -409,3 +409,9 @@ button[type="submit"] a{
     text-decoration: none;
     font-weight: bold;
 }
+
+/* edit chef file */
+.fields .item .photos-upload #photos-input{
+    border:none;
+    
+}

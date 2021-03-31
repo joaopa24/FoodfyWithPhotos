@@ -2,36 +2,39 @@
 {% block content %}
     <div class="create_content">
         <div class="forms">
-        <form action="/admin/Chefs?_method=PUT" method="post"> 
-            <div class="create_header">
-                <p>Criando Chef</p>
-                <input type="hidden" name="id" value="{{Chef.id}}">
-                <button type="submit">Salvar Chef</button>
-            </div>
-            <div class="fields">
-                <div class="item">
-                    <p>Nome do Chef</p>
-                    <div>
-                        <input type="text" name="nome_chef" value="{{ Chef.name }}">
-                    </div>
+            <form action="/admin/Chefs?_method=PUT" method="post">
+                <div class="create_header">
+                    <p>Criando Chef</p>
+                    <input type="hidden" name="id" value="{{Chef.id}}">
+                    <button type="submit">Salvar Chef</button>
                 </div>
-                 <div class="item">
-                    <p>Avatar</p>
-                    <div>
-                        <div class="photos-upload">
-                             <input type="file" name="photos" id="photos-input" multiple accept="image/*">
+                <div class="fields">
+                    <div class="item">
+                        <p>Nome do Chef</p>
+                        <div>
+                            <input type="text" name="nome_chef" value="{{ Chef.name }}">
                         </div>
-                        <div class="photos-preview">
+                    </div>
+                    <div class="item">
+                        <p>Avatar</p>
+                        <div >
+                            <div class="photos">
+                                <div id="photos-upload">
+                                    <input type="file" name="photos" id="photos-input" multiple="multiple" accept="image/*">
+                                </div>
+                                <div id="photos-preview">
+
+                                </div>
+                            </div>
 
                         </div>
                     </div>
                 </div>
-            </div>
-        </form>
-         <form id="form-delete-chef" action="/admin/Chefs?_method=DELETE" method="POST">
+            </form>
+            <form id="form-delete-chef" action="/admin/Chefs?_method=DELETE" method="POST">
                 <input type="hidden" name="id" value="{{ Chef.id }}">
                 <button type="submit">Deletar</button>
-         </form>
-         </div>
+            </form>
+        </div>
     </div>
 {% endblock %}
