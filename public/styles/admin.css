@@ -418,14 +418,17 @@ button[type="submit"] a{
     width: 200px;
     height: 200px;
     display: block;
+    cursor: pointer;
     
 }
 .fields .item .photos #photos-upload:hover{
     border:2px solid #333;
+    transition: 200ms;
     
 }
 .fields .item .photos #photos-upload:hover i{
     color: #333;
+    transition: 200ms;
 }
 
 .fields .item .photos #photos-upload i{
@@ -444,6 +447,8 @@ button[type="submit"] a{
     top: 0;
     left: 0;
     
+    margin: 0;
+    padding: 0;
     cursor: pointer;
     display: block;
     overflow: hidden;
