@@ -411,7 +411,35 @@ button[type="submit"] a{
 }
 
 /* edit chef file */
-.fields .item .photos-upload #photos-input{
-    border:none;
+.fields .item .photos #photos-upload{
+    border:2px solid #efefef;
+    position: relative;
+    width: 200px;
+    height: 200px;
+    display: block;
     
+}
+
+.fields .item .photos #photos-upload i{
+    width: 100%;
+    height: 100%;
+    font-size: 500%;
+    text-shadow: 1px 1px 1px 1px #111111;
+    color: #efefef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.fields .item #photos-input{
+    position: absolute;
+    top: 0;
+    left: 0;
+    
+    cursor: pointer;
+    display: block;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
 }
