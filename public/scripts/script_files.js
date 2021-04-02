@@ -1,3 +1,5 @@
+console.log('lol')
+
 const PhotosUpload = {
     input:"",
     preview: document.querySelector('#photos-preview-select'),
@@ -14,7 +16,8 @@ const PhotosUpload = {
             return true
         }
 
-        const photosDiv
+        const photosDiv = []
+
         preview.childNodes.forEach(item => {
             if (item.classList && item.classList.value == "photo") {
                 photosDiv.push(item)
@@ -37,10 +40,32 @@ const PhotosUpload = {
         div.onclick = PhotosUpload.removePhoto
 
         div.appendChild(image)
-
-        div.appendChild(PhotosUpload.getRemoveButton())
-
+        
         return div
+    },
+    handleFileInput(event){
+        const { files: fileList } = event.target
+        PhotosUpload.input = event.target
+
+        if(PhotosUpload.HasLimit(event)) return
+
+        Array.from(fileList).forEach(file => {
+            
+            PhotosUpload.files.push(file)
+
+            const reader = new FileReader()
+
+            reader.onload = () => {
+                const image = new Image()
+                image.src = String(reader.result)
+
+                const div = PhotosUpload.getContainer(image)
+
+                PhotosUpload.preview.appendChild(div)
+            }
+
+            reader.readAsDataURL(file)
+        })
     }
     
 }
