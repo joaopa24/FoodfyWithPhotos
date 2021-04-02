@@ -1,6 +1,6 @@
 const PhotosUpload = {
     input:"",
-    preview: document.querySelector('#photos-preview'),
+    preview: document.querySelector('#photos-preview-select'),
     uploadLimit:1,
     files:[],
 
@@ -30,5 +30,17 @@ const PhotosUpload = {
 
         return false
     },
+    getContainer(image){
+        const div = document.createElement('div')
+        div.classList.add('photo')
+
+        div.onclick = PhotosUpload.removePhoto
+
+        div.appendChild(image)
+
+        div.appendChild(PhotosUpload.getRemoveButton())
+
+        return div
+    }
     
 }

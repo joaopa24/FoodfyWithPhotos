@@ -411,6 +411,10 @@ button[type="submit"] a{
 }
 
 /* edit chef file */
+.photos,.titles_upload{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+}
 .fields .item .photos #photos-upload{
     border:2px solid #efefef;
     border-radius: 4px;
