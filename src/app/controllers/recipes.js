@@ -1,7 +1,7 @@
 const Recipe = require("../models/recipe")
 
 module.exports = {
-    home(req, res) {
+    async home(req, res) {
         let { filter , page , limit } = req.query
           
         page = page || 1
@@ -12,14 +12,16 @@ module.exports = {
             filter,
             page,
             limit,
-            offset,
-            callback(recipes){
-                Recipe.chefsOption(function (chefsOptions) {
-                    return res.render("home", { chefsOptions, recipes, filter })
-                })
-            }
+            offset
         }
-        Recipe.paginate(params)
+        
+        results = await Recipe.all()
+        const recipes = results.rows
+
+        results = await Recipe.chefsOption()
+        const chefsOptions = results.rows
+
+        return res.render("home", { chefsOptions, recipes, filter })
     },
     recipes(req, res) {
         let { filter , page , limit } = req.query
