@@ -57,8 +57,8 @@ module.exports = {
 
      return db.query(query , values)
     },
-    paginate(params){
-            const { filter , limit, offset, callback } = params
+    async paginate(params){
+            const { filter , limit, offset } = params
             
             let query = "",
                 filterQuery = "",
@@ -84,6 +84,8 @@ module.exports = {
             LIMIT $1 OFFSET $2 
             `
             
-            return db.query(query, [limit,offset])
+            const results = await db.query(query, [limit,offset])
+
+            return results.rows
     }
 }

@@ -3,7 +3,6 @@ const Recipe = require("../models/recipe")
 module.exports = {
     async home(req, res) {
         let { filter , page , limit } = req.query
-          
         page = page || 1
         limit = limit || 6
         let offset = limit * (page - 1)
@@ -15,12 +14,12 @@ module.exports = {
             offset
         }
         
-        results = await Recipe.all()
-        const recipes = results.rows
-
         results = await Recipe.chefsOption()
         const chefsOptions = results.rows
 
+        results = await Recipe.all() 
+        const recipes = results.rows
+       
         return res.render("home", { chefsOptions, recipes, filter })
     },
     recipes(req, res) {
