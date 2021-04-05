@@ -7,7 +7,7 @@ module.exports = {
         limit = limit || 6
         let offset = limit * (page - 1)
 
-        results = await Recipe.chefsOption()
+        let results = await Recipe.chefsOption()
         const chefsOptions = results.rows
         
         const params = {
@@ -16,7 +16,8 @@ module.exports = {
             offset
         }
         
-        recipes = await Recipe.paginate(params)
+        results = await Recipe.paginate(params)
+        const recipes = results.rows
         
         return res.render("home", { chefsOptions, recipes, filter })
     },
