@@ -21,29 +21,32 @@ module.exports = {
         
         return res.render("home", { chefsOptions, recipes, filter })
     },
-    recipes(req, res) {
+    async recipes(req, res) {
         let { filter , page , limit } = req.query
           
         page = page || 1
         limit = limit || 6
         let offset = limit * (page - 1)
+        
+        let results = await Recipe.chefsOption()
+        const chefsOptions = results.rows
 
         const params = {
             filter,
             page,
             limit,
-            offset,
-            callback(recipes){
-                const pagination = {
-                    total: Math.ceil(recipes[0].total/ limit),
-                    page
-                }
-                Recipe.chefsOption(function (chefsOptions) {
-                    return res.render("receitas", { chefsOptions, recipes, pagination, filter })
-                })
-            }
+            offset
         }
-        Recipe.paginate(params)
+
+        results = await Recipe.paginate(params)
+        const recipes = results.rows
+
+        const pagination = {
+            total: Math.ceil(recipes[0].total/ limit),
+            page
+        }
+        
+        return res.render("receitas", { chefsOptions, recipes, pagination, filter })
     },
     results(req,res){
         let { filter , page , limit } = req.query
