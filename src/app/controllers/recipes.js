@@ -117,7 +117,7 @@ module.exports = {
         let results = await Recipe.chefsOption()
         const chefsOptions = results.rows
         
-        let results = await Recipe.find(id)
+        results = await Recipe.find(id)
         const recipe = results.rows[0]
        
         return res.render("Admin/recipe", { chefsOptions, recipe })
@@ -128,12 +128,12 @@ module.exports = {
         let results = await Recipe.chefsOption()
         const chefsOptions = results.rows
         
-        let results = await Recipe.find(id)
+        results = await Recipe.find(id)
         const recipe = results.rows[0]
 
         if (!recipe) return res.send("Receita não encontrada")
        
-        return res.render("Admin/recipe", { chefsOptions, recipe })
+        return res.render("Admin/edit", { chefsOptions, recipe })
     },
     post(req, res) {
         const keys = Object.keys(req.body)
