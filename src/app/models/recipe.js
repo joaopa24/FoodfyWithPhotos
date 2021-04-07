@@ -93,5 +93,8 @@ module.exports = {
             console.error(err)
         }
             
-    }
+    },
+    files(id){
+        return db.query('SELECT * FROM files WHERE recipe_id = $1',[id])
+     }
 }
