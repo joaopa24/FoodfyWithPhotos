@@ -99,10 +99,10 @@ module.exports = {
         let results = await Recipe.all()
         const recipes = results.rows
 
-        results = await chefsOption()
+        results = await Recipe.chefsOption()
         const chefsOptions = results.rows
 
-        return res.render("Admin/index", { chefsOptions, recipes })
+        return res.render("Admin/index", { chefsOptions , recipes })
     },
     async create(req, res) {
 
