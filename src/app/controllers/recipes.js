@@ -148,18 +148,19 @@ module.exports = {
         
         return res.redirect(`/admin/Receitas/${recipeId}`)
     },
-    put(req, res) {
+    async put(req, res) {
         const keys = Object.keys(req.body)
+        
         for (key of keys) {
             if (req.body[key] == "") {
                 console.log(key)
                 return res.send("porfavor preencha todos os campos")
             }
         }
-        console.log(req.body)
-        Recipe.update(req.body, function () {
-            return res.redirect(`/admin/Receitas/${req.body.id}`)
-        })
+        
+        await Recipe.update(req.body)
+
+        return res.redirect(`/admin/Receitas/${req.body.id}`)
     },
     delete(req, res) {
         const { id } = req.body
