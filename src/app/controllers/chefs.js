@@ -7,7 +7,7 @@ module.exports = {
 
         return res.render("chef", { Chefs })
     },
-    chefsAdmin(req, res) {
+    async chefsAdmin(req, res) {
         let results = await Chef.all()
         const Chefs = results.rows
 
