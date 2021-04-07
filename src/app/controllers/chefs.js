@@ -1,23 +1,17 @@
 const Chef = require("../models/chef")
 
 module.exports = {
-    chefs(req, res) {
-        Chef.all()
-        .then(function(results){
-            const Chefs = results.rows
-            return res.render("chef", { Chefs })
-        }).catch(function(err){
-            throw new Error(err)
-        })
+    async chefs(req, res) {
+        let results = await Chef.all()
+        const Chefs = results.rows
+
+        return res.render("chef", { Chefs })
     },
     chefsAdmin(req, res) {
-        Chef.all()
-        .then(function(results){
-            const Chefs = results.rows
-            return res.render("Admin/chefs", { Chefs })
-        }).catch(function(err){
-            throw new Error(err)
-        })
+        let results = await Chef.all()
+        const Chefs = results.rows
+
+        return res.render("Admin/chefs", { Chefs })
     },
     async chefAdmin(req, res) {
     
