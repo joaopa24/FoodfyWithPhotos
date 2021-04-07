@@ -1,4 +1,3 @@
-const { chefsOption } = require("../models/recipe")
 const Recipe = require("../models/recipe")
 
 module.exports = {
@@ -105,10 +104,12 @@ module.exports = {
 
         return res.render("Admin/index", { chefsOptions, recipes })
     },
-    create(req, res) {
-        Recipe.chefsOption(function (chefsOptions) {
-            return res.render("Admin/create", { chefsOptions })
-        })
+    async create(req, res) {
+
+        let results = await Recipe.chefsOption()
+        const chefsOptions = results.rows
+
+        return res.render("Admin/create", { chefsOptions })
     },
     recipe_admin(req, res) {
         const id = req.params.id;
