@@ -1,3 +1,4 @@
+const { chefsOption } = require("../models/recipe")
 const Recipe = require("../models/recipe")
 
 module.exports = {
@@ -65,7 +66,6 @@ module.exports = {
             offset,
         }
 
-
         results = await Recipe.paginate(params)
         const recipes = results.rows
 
@@ -85,21 +85,25 @@ module.exports = {
     about(req, res) {
         return res.render("sobre")
     },
-    recipe(req, res) {
+    async recipe(req, res) {
         const id = req.params.id;
+        
+        let results = await Recipe.chefsOption()
+        const chefsOptions = results.rows 
 
-        Recipe.find(id, function (recipe) {
-            Recipe.chefsOption(function (chefsOptions) {
-                return res.render("receita", { chefsOptions, recipe })
-            })
-        })
+        results = await Recipe.find(id)
+        const recipe = results.rows[0]
+
+        return res.render("receita", { chefsOptions, recipe })
     },
-    index(req, res) {
-        Recipe.all(function (recipes) {
-            Recipe.chefsOption(function (chefsOptions) {
-                return res.render("Admin/index", { chefsOptions, recipes })
-            })
-        })
+    async index(req, res) {
+        let results = await Recipe.all()
+        const recipes = results.rows
+
+        results = await chefsOption()
+        const chefsOptions = results.rows
+
+        return res.render("Admin/index", { chefsOptions, recipes })
     },
     create(req, res) {
         Recipe.chefsOption(function (chefsOptions) {
