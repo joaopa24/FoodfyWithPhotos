@@ -1,3 +1,4 @@
+const { files } = require('../../../../Modulo-6/src/app/models/Product')
 const db = require('../../config/db')
 const { date } = require('../../lib/utils')
 
@@ -63,5 +64,8 @@ module.exports = {
     },
     delete(id){
         return db.query(`DELETE FROM chefs WHERE id = $1`, [id])
+    },
+    files(id){
+       return db.query('SELECT * FROM files WHERE chef_id = $1',[id])
     }
 }
