@@ -114,12 +114,13 @@ module.exports = {
     recipe_admin(req, res) {
         const id = req.params.id;
 
-        Recipe.find(id, function (recipe) {
-            Recipe.chefsOption(function (chefsOptions) {
-                return res.render("Admin/recipe", { chefsOptions, recipe })
-            })
-        })
-
+        let results = await Recipe.chefsOption()
+        const chefsOptions = results.rows
+        
+        let results = await Recipe.find(id)
+        const recipe = results.rows[0]
+       
+        return res.render("Admin/recipe", { chefsOptions, recipe })
     },
     recipe_admin_edit(req, res) {
         const { id } = req.params
