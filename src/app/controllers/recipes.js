@@ -111,7 +111,7 @@ module.exports = {
 
         return res.render("Admin/create", { chefsOptions })
     },
-    recipe_admin(req, res) {
+    async recipe_admin(req, res) {
         const id = req.params.id;
 
         let results = await Recipe.chefsOption()
@@ -122,17 +122,18 @@ module.exports = {
        
         return res.render("Admin/recipe", { chefsOptions, recipe })
     },
-    recipe_admin_edit(req, res) {
+    async recipe_admin_edit(req, res) {
         const { id } = req.params
 
-        Recipe.find(id, function (recipe) {
-            if (!recipe) return res.send("Receita não encontrada")
+        let results = await Recipe.chefsOption()
+        const chefsOptions = results.rows
+        
+        let results = await Recipe.find(id)
+        const recipe = results.rows[0]
 
-            console.log(recipe)
-            Recipe.chefsOption(function (chefsOptions) {
-                return res.render("Admin/edit", { chefsOptions, recipe })
-            })
-        })
+        if (!recipe) return res.send("Receita não encontrada")
+       
+        return res.render("Admin/recipe", { chefsOptions, recipe })
     },
     post(req, res) {
         const keys = Object.keys(req.body)
