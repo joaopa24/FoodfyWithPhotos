@@ -135,17 +135,18 @@ module.exports = {
        
         return res.render("Admin/edit", { chefsOptions, recipe })
     },
-    post(req, res) {
+    async post(req, res) {
         const keys = Object.keys(req.body)
+
         for (key of keys) {
             if (req.body[key] == "")
                 return res.send("porfavor preencha todos os campos")
         }
-
-        Recipe.create(req.body, function (recipe) {
-            console.log(req.body)
-            return res.redirect(`/admin/Receitas/${recipe.id}`)
-        })
+        
+        let results = await Recipe.create(req.body)
+        const recipeId = results.rows[0].id 
+        
+        return res.redirect(`/admin/Receitas/${recipeId}`)
     },
     put(req, res) {
         const keys = Object.keys(req.body)
