@@ -2,32 +2,32 @@ const Recipe = require("../models/recipe")
 
 module.exports = {
     async home(req, res) {
-        let { filter , page , limit } = req.query
+        let { filter, page, limit } = req.query
         page = page || 1
         limit = limit || 6
         let offset = limit * (page - 1)
 
         let results = await Recipe.chefsOption()
         const chefsOptions = results.rows
-        
+
         const params = {
             filter,
             limit,
             offset
         }
-        
+
         results = await Recipe.paginate(params)
         const recipes = results.rows
-        
+
         return res.render("home", { chefsOptions, recipes, filter })
     },
     async recipes(req, res) {
-        let { filter , page , limit } = req.query
-          
+        let { filter, page, limit } = req.query
+
         page = page || 1
         limit = limit || 6
         let offset = limit * (page - 1)
-        
+
         let results = await Recipe.chefsOption()
         const chefsOptions = results.rows
 
@@ -42,46 +42,45 @@ module.exports = {
         const recipes = results.rows
 
         const pagination = {
-            total: Math.ceil(recipes[0].total/ limit),
+            total: Math.ceil(recipes[0].total / limit),
             page
         }
-        
+
         return res.render("receitas", { chefsOptions, recipes, pagination, filter })
     },
-    results(req,res){
-        let { filter , page , limit } = req.query
-          
+    async results(req, res) {
+        let { filter, page, limit } = req.query
+
         page = page || 1
         limit = limit || 6
         let offset = limit * (page - 1)
+
+        let results = await Recipe.chefsOption()
+        const chefsOptions = results.rows
 
         const params = {
             filter,
             page,
             limit,
             offset,
-            callback(recipes){
-                if (recipes == 0) {
-                    const pagination = { page }
-                    console.log(recipes.length)
-                    console.log("if")
-                    Recipe.chefsOption(function (chefsOptions) {
-                        return res.render("results", { chefsOptions, recipes, pagination, filter })
-                    })
-                } else {
-                    console.log(recipes.length)
-                    console.log("else")
-                    const pagination = {
-                        total: Math.ceil(recipes[0].total/ limit),
-                        page,
-                    }
-                    Recipe.chefsOption(function (chefsOptions) {
-                        return res.render("results", { chefsOptions, recipes, pagination, filter })
-                    })
-                }
-            }
         }
-        Recipe.paginate(params)
+
+
+        results = await Recipe.paginate(params)
+        const recipes = results.rows
+
+        if (recipes == 0) {
+            const pagination = { page }
+            return res.render("results", { chefsOptions, recipes, pagination, filter })
+
+        } else {
+            const pagination = {
+                total: Math.ceil(recipes[0].total / limit),
+                page,
+            }
+            return res.render("results", { chefsOptions, recipes, pagination, filter })
+        }
+
     },
     about(req, res) {
         return res.render("sobre")
@@ -122,7 +121,7 @@ module.exports = {
 
         Recipe.find(id, function (recipe) {
             if (!recipe) return res.send("Receita não encontrada")
-            
+
             console.log(recipe)
             Recipe.chefsOption(function (chefsOptions) {
                 return res.render("Admin/edit", { chefsOptions, recipe })
