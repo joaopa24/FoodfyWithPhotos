@@ -1,4 +1,3 @@
-const { files } = require('../../../../Modulo-6/src/app/models/Product')
 const db = require('../../config/db')
 const { date } = require('../../lib/utils')
 
