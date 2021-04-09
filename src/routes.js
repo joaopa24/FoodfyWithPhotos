@@ -19,7 +19,6 @@ routes.post("/admin/Chefs", multer.array("photos", 1),chef.post)
 routes.put("/admin/Chefs", multer.array("photos", 1),chef.put)
 routes.delete("/admin/Chefs", chef.delete)
 
-
 routes.get("/admin/Receitas", recipes.index)
 routes.get("/admin/Receitas/criar", recipes.create)
 routes.get("/admin/Receitas/:id", recipes.recipe_admin)
