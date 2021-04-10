@@ -3,7 +3,7 @@ console.log('lol')
 const PhotosUpload = {
     input:"",
     preview: document.querySelector('#photos-preview-select'),
-    uploadLimit:1,
+    uploadLimit:5,
     files:[],
 
     HasLimit(event){
