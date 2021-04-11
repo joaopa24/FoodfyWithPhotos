@@ -1,4 +1,5 @@
 const Chef = require("../models/chef")
+const File = require("../models/file")
 
 module.exports = {
     async chefs(req, res) {
@@ -44,6 +45,13 @@ module.exports = {
             }
         }
         
+        if(req.files.length == 0){
+            return res.send('Porfavor enfie uma imagem')
+        }
+
+        req.files.forEach(files => {
+            await File.create()
+        })
         let results = await Chef.create(req.body)
         const chefId = results.rows[0].id
         
