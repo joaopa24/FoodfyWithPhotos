@@ -49,9 +49,6 @@ module.exports = {
             return res.send('Porfavor enfie uma imagem')
         }
 
-        req.files.forEach(files => {
-            await File.create()
-        })
         let results = await Chef.create(req.body)
         const chefId = results.rows[0].id
         
