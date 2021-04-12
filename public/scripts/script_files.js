@@ -50,6 +50,15 @@ const PhotosUpload = {
         
         return button
     },
+    getAllFiles(){
+        const dataTransfer = new DataTransfer() || new ClipboardEvent("").clipboardData
+
+        PhotosUpload.files.forEach(file => dataTransfer.items.add(file))
+        
+        console.log(dataTransfer)
+        return dataTransfer.files
+
+    },
     handleFileInput(event){
         const { files: fileList } = event.target
         PhotosUpload.input = event.target
@@ -57,7 +66,7 @@ const PhotosUpload = {
         if(PhotosUpload.HasLimit(event)) return
 
         Array.from(fileList).forEach(file => {
-            
+
             PhotosUpload.files.push(file)
 
             const reader = new FileReader()
@@ -73,11 +82,16 @@ const PhotosUpload = {
 
             reader.readAsDataURL(file)
         })
+
+        PhotosUpload.input.files = PhotosUpload.getAllFiles()
     },
     removePhoto(event){
         const photoDiv = event.target.parentNode
         const photosArray = Array.from(PhotosUpload.preview.children)
         const index = photosArray.indexOf(photoDiv)
+
+        PhotosUpload.files.splice(index, 1)
+        PhotosUpload.input.files = PhotosUpload.getAllFiles()
 
         photoDiv.remove();
     }
