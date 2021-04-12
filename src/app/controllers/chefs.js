@@ -1,5 +1,5 @@
 const Chef = require("../models/chef")
-const File = require("../models/file")
+const Files = require("../models/file")
 
 module.exports = {
     async chefs(req, res) {

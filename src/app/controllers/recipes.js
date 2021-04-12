@@ -1,4 +1,5 @@
 const Recipe = require("../models/recipe")
+const Files = require("../models/file")
 
 module.exports = {
     async home(req, res) {
