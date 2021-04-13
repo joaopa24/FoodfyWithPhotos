@@ -412,6 +412,11 @@ button[type="submit"] a{
 }
 
 /* edit chef file */
+.titles_upload{
+    display: flex;
+    justify-content: space-between;
+    width:300px;
+}
 .photos{
     display: grid;
     grid-template-columns: 140px 1fr;
