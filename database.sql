@@ -1,7 +1,7 @@
 CREATE TABLE "chefs" (
   "id" SERIAL PRIMARY KEY,
   "name" text,
-  "file_id" int,
+  "file_id" int UNIQUE,
   "created_at" date
 );
 
