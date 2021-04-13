@@ -1,7 +1,7 @@
 CREATE TABLE "chefs" (
   "id" SERIAL PRIMARY KEY,
   "name" text,
-  "avatar_url" text,
+  "file_id" int,
   "created_at" date
 );
 
@@ -30,3 +30,5 @@ CREATE TABLE "recipe_files" (
 ALTER TABLE "recipe_files" ADD FOREIGN KEY ("recipe_id") REFERENCES "recipes" ("id");
 
 ALTER TABLE "files" ADD FOREIGN KEY ("id") REFERENCES "recipe_files" ("file_id");
+
+ALTER TABLE "files" ADD FOREIGN KEY ("id") REFERENCES "chefs" ("file_id");
