@@ -141,7 +141,11 @@ module.exports = {
 
         for (key of keys) {
             if (req.body[key] == "")
-                return res.send("porfavor preencha todos os campos")
+                return res.send("Porfavor preencha todos os campos!")
+        }
+        
+        if(req.files.length == 0){
+            return res.send('Porfavor pelo menos uma imagem!')
         }
         
         let results = await Recipe.create(req.body)
