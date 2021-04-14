@@ -27,17 +27,15 @@ module.exports = {
     },
     create(data){
         const query = `
-        INSERT INTO chefs(
-            avatar_url,
+        INSERT INTO chefs (
             name,
             created_at
-        ) VALUES ($1 , $2, $3)
+        ) VALUES ($1 , $2)
             RETURNING id
         `
         
         const values = [
-            data.avatar,
-            data.nome_chef,
+            data.name,
             date(Date.now()).iso
         ]
 

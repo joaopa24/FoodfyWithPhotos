@@ -38,25 +38,22 @@ module.exports = {
     },
     async post(req, res) {
         const keys = Object.keys(req.body)
+        console.log(req.files)
+        console.log(req.body)
 
         for (key of keys) {
             if (req.body[key] == "") {
                 return res.send("Preencha todos os campos!")
             }
         }
-        
-        if(req.files.length == 0){
+
+        if (req.files.length == 0){
             return res.send('Porfavor enfie uma imagem')
         }
 
-        const filePromise = req.files.map(file => 
-            File.create({...file}))
-        
-        await Promise.all(filePromise)
-
         let results = await Chef.create(req.body)
         const chefId = results.rows[0].id
-        
+
         return res.redirect(`/admin/Chefs/${chefId}`)
     },
     async put(req, res) {
