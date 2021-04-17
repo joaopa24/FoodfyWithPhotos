@@ -25,17 +25,19 @@ module.exports = {
     find(id){
        return db.query(`SELECT chefs.* FROM chefs WHERE id = $1`, [id])
     },
-    create(data){
+    create(data,file_id){
         const query = `
         INSERT INTO chefs (
             name,
+            file_id,
             created_at
-        ) VALUES ($1 , $2)
+        ) VALUES ($1,$2,$3)
             RETURNING id
         `
         
         const values = [
             data.name,
+            file_id,
             date(Date.now()).iso
         ]
 

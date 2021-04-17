@@ -38,8 +38,6 @@ module.exports = {
     },
     async post(req, res) {
         const keys = Object.keys(req.body)
-        console.log(req.files)
-        console.log(req.body)
 
         for (key of keys) {
             if (req.body[key] == "") {
@@ -51,7 +49,11 @@ module.exports = {
             return res.send('Porfavor enfie uma imagem')
         }
 
-        let results = await Chef.create(req.body)
+        const filePromise = req.files.map(file => File.create({...file}))
+        let results = await filePromise[0]
+        const file_id = results.rows[0].id
+
+        results = await Chef.create(req.body,file_id)
         const chefId = results.rows[0].id
 
         return res.redirect(`/admin/Chefs/${chefId}`)

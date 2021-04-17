@@ -23,8 +23,8 @@ CREATE TABLE "files" (
 
 CREATE TABLE "recipe_files" (
   "id" SERIAL PRIMARY KEY,
-  "recipe_id" int UNIQUE,
-  "file_id" int UNIQUE
+  "recipe_id" int NOT NULL,
+  "file_id" int NOT NULL
 );
 
 ALTER TABLE "recipe_files" ADD FOREIGN KEY ("recipe_id") REFERENCES "recipes" ("id");
