@@ -7,7 +7,7 @@ CREATE TABLE "chefs" (
 
 CREATE TABLE "recipes" (
   "id" SERIAL PRIMARY KEY,
-  "chef_id" int,
+  "chef_id" int NOT NULL,
   "title" text,
   "ingredients" text[],
   "preparation" text[],
@@ -30,7 +30,5 @@ CREATE TABLE "recipe_files" (
 ALTER TABLE "recipe_files" ADD FOREIGN KEY ("recipe_id") REFERENCES "recipes" ("id");
 
 ALTER TABLE "recipe_files" ADD FOREIGN KEY ("file_id") REFERENCES "files" ("id");
-
-ALTER TABLE "recipes" ADD FOREIGN KEY ("chef_id") REFERENCES "chefs" ("id");
 
 ALTER TABLE "chefs" ADD FOREIGN KEY ("file_id") REFERENCES "files" ("id");

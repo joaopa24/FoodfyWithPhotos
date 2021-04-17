@@ -138,6 +138,7 @@ module.exports = {
     },
     async post(req, res) {
         const keys = Object.keys(req.body)
+       
 
         for (key of keys) {
             if (req.body[key] == "")
@@ -147,10 +148,12 @@ module.exports = {
         if(req.files.length == 0){
             return res.send('Porfavor pelo menos uma imagem!')
         }
-        
+
         let results = await Recipe.create(req.body)
         const recipeId = results.rows[0].id 
-        
+
+        console.log(req.body)
+
         return res.redirect(`/admin/Receitas/${recipeId}`)
     },
     async put(req, res) {

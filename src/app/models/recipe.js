@@ -18,7 +18,7 @@ module.exports = {
              RETURNING id
         `
         const values = [
-               data.chef_id, 
+               data.chef, 
                data.title,
                data.ingredients,
                data.preparation,
