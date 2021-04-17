@@ -17,7 +17,7 @@ CREATE TABLE "recipes" (
 
 CREATE TABLE "files" (
   "id" SERIAL PRIMARY KEY,
-  "name" text,
+  "name" text NOT NULL,
   "path" text NOT NULL
 );
 
@@ -29,6 +29,8 @@ CREATE TABLE "recipe_files" (
 
 ALTER TABLE "recipe_files" ADD FOREIGN KEY ("recipe_id") REFERENCES "recipes" ("id");
 
-ALTER TABLE "files" ADD FOREIGN KEY ("id") REFERENCES "recipe_files" ("file_id");
+ALTER TABLE "recipe_files" ADD FOREIGN KEY ("file_id") REFERENCES "files" ("id");
 
-ALTER TABLE "files" ADD FOREIGN KEY ("id") REFERENCES "chefs" ("file_id");
+ALTER TABLE "recipes" ADD FOREIGN KEY ("chef_id") REFERENCES "chefs" ("id");
+
+ALTER TABLE "chefs" ADD FOREIGN KEY ("file_id") REFERENCES "files" ("id");
