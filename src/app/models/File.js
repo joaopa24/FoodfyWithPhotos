@@ -10,10 +10,21 @@ module.exports = {
         ) VALUES ($1, $2)
         RETURNING id 
         `
-
         const values = [
             filename,
             path
+        ]
+        return db.query(query,values)
+    },
+    RecipeFiles(){
+        const query = `
+        INSERT INTO recipe_files (
+           recipe_id,
+           file_id
+        )
+        `
+        const values = [
+
         ]
         return db.query(query,values)
     },
