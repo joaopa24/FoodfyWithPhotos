@@ -152,7 +152,7 @@ module.exports = {
         let results = await Recipe.create(req.body)
         const recipeId = results.rows[0].id 
 
-        console.log(req.body)
+        
 
         return res.redirect(`/admin/Receitas/${recipeId}`)
     },
