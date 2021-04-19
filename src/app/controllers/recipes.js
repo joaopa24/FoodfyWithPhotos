@@ -1,5 +1,5 @@
 const Recipe = require("../models/recipe")
-const Files = require("../models/file")
+const File = require("../models/file")
 
 module.exports = {
     async home(req, res) {
@@ -150,11 +150,19 @@ module.exports = {
         }
         
         let results = await Recipe.create(req.body)
-        const recipeId = results.rows[0].id 
+        const recipe_id = results.rows[0].id 
+     
+        const filesPromise = req.files.map(file => File.create({...file}))
+        results = await filesPromise[0]
+        const file_id = results.rows[0].id
 
-        
+        await Promise.all(filesPromise)
+    
+        console.log(file_id)
 
-        return res.redirect(`/admin/Receitas/${recipeId}`)
+        results = await File.RecipeFiles({recipe_id,file_id})
+
+        return res.redirect(`/admin/Receitas/${recipe_id}`)
     },
     async put(req, res) {
         const keys = Object.keys(req.body)
