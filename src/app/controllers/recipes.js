@@ -139,7 +139,6 @@ module.exports = {
     async post(req, res) {
         const keys = Object.keys(req.body)
        
-
         for (key of keys) {
             if (req.body[key] == "")
                 return res.send("Porfavor preencha todos os campos!")
@@ -154,13 +153,12 @@ module.exports = {
      
         const filesPromise = req.files.map(file => File.create({...file}))
         results = await filesPromise[0]
+
         const file_id = results.rows[0].id
+        
+        results = await File.RecipeFiles({recipe_id,file_id})
 
         await Promise.all(filesPromise)
-    
-        console.log(file_id)
-
-        results = await File.RecipeFiles({recipe_id,file_id})
 
         return res.redirect(`/admin/Receitas/${recipe_id}`)
     },
