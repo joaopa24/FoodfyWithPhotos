@@ -154,11 +154,13 @@ module.exports = {
         const filesPromise = req.files.map(file => File.create({...file}))
         results = await filesPromise[0]
 
-        const file_id = results.rows[0].id
-
         const filesResults =  await Promise.all(filesPromise)
-        
+        const recipeFiles = filesResults.map(file => {
+            const file_id = file.rows[0].id
+            File.RecipeFiles(recipe_id, file_id)
+        })
 
+        await Promise.all(recipeFiles)
         return res.redirect(`/admin/Receitas/${recipe_id}`)
     },
     async put(req, res) {
