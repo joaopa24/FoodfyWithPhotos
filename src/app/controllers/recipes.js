@@ -155,10 +155,9 @@ module.exports = {
         results = await filesPromise[0]
 
         const file_id = results.rows[0].id
-        
-        results = await File.RecipeFiles({recipe_id,file_id})
 
-        await Promise.all(filesPromise)
+        const filesResults =  await Promise.all(filesPromise)
+        
 
         return res.redirect(`/admin/Receitas/${recipe_id}`)
     },
