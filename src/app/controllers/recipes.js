@@ -120,9 +120,8 @@ module.exports = {
         const chefsOptions = results.rows
 
         results = await Recipe.files(recipe.id)
-        console.log(results.rows)
-        const files = results.rows.map(file => ({
 
+        const files = results.rows.map(file => ({
             ...file,
             src:`${req.protocol}://${req.headers.host}${file.path.replace("public","")}`
         }))
@@ -173,10 +172,20 @@ module.exports = {
         const keys = Object.keys(req.body)
         
         for (key of keys) {
-            if (req.body[key] == "") {
-                console.log(key)
+            if (req.body[key] == "" != "removed_files") {
                 return res.send("porfavor preencha todos os campos")
             }
+        }
+
+        if(req.files.length != 0){
+              const oldFiles = await Recipe.files(req.body.id)
+              const totalFiles = oldFiles.rows.length + req.files.length
+              
+              if(totalFiles <= 6){
+                  const newFilesPromise = req.files.map(file => File.create({...file}))
+
+                  await Promise.all(newFilesPromise)
+              }
         }
         
         await Recipe.update(req.body)
