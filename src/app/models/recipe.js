@@ -1,5 +1,4 @@
 const db = require('../../config/db')
-const { date } = require("../../lib/utils")
 
 module.exports = {
     all(){
@@ -28,7 +27,7 @@ module.exports = {
 
         return db.query(query , values)
     },
-    find(id){
+    async find(id){
         return db.query(`SELECT * FROM recipes WHERE id = $1`, [id])
     },
     chefsOption(){
@@ -94,7 +93,17 @@ module.exports = {
         }
             
     },
-    files(id){
-        return db.query('SELECT * FROM recipe_files WHERE recipe_id = $1',[id])
+    async files(id){
+        try {
+            const results = await db.query(`SELECT files.*
+            FROM files
+            LEFT JOIN recipe_files
+            ON (files.id = recipe_files.file_id)
+            WHERE recipe_files.recipe_id = $1`, [id])
+ 
+            return results
+        } catch(err){
+            console.log(err)
+        }
      }
 }
