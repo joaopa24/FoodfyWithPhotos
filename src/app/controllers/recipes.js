@@ -187,8 +187,6 @@ module.exports = {
                   await Promise.all(newFilesPromise)
               }
         }
-
-        
         
         await Recipe.update(req.body)
 
