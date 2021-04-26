@@ -125,7 +125,7 @@ module.exports = {
             ...file,
             src:`${req.protocol}://${req.headers.host}${file.path.replace("public","")}`
         }))
-        console.log('2')
+        
         return res.render("Admin/recipe", { chefsOptions, recipe, files })
     },
     async recipe_admin_edit(req, res) {
@@ -137,9 +137,16 @@ module.exports = {
         results = await Recipe.find(id)
         const recipe = results.rows[0]
 
+        results = await Recipe.files(id)
+
+        const files = results.rows.map(file => ({
+            ...file,
+            src:`${req.protocol}://${req.headers.host}${file.path.replace("public","")}`
+        }))
+
         if (!recipe) return res.send("Receita não encontrada")
        
-        return res.render("Admin/edit", { chefsOptions, recipe })
+        return res.render("Admin/edit", { chefsOptions, recipe, files})
     },
     async post(req, res) {
         const keys = Object.keys(req.body)
