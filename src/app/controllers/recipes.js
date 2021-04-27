@@ -146,7 +146,7 @@ module.exports = {
 
         if (!recipe) return res.send("Receita não encontrada")
        
-        return res.render("Admin/edit", { chefsOptions, recipe, files})
+        return res.render("Admin/edit", { chefsOptions, recipe, files })
     },
     async post(req, res) {
         const keys = Object.keys(req.body)
