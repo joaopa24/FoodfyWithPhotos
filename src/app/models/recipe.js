@@ -54,7 +54,7 @@ module.exports = {
             data.id
      ] 
 
-     return db.query(query , values)
+     return db.query(query,values)
     },
     async paginate(params){
         try{
@@ -95,7 +95,7 @@ module.exports = {
     },
     async files(id){
         try {
-            const results = await db.query(`SELECT files.*
+            const results = await db.query(`SELECT *
             FROM files
             LEFT JOIN recipe_files
             ON (files.id = recipe_files.file_id)

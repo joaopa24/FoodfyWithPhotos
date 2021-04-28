@@ -2,7 +2,7 @@
 {% block content %}
     <div class="create_content">
         <div class="forms">
-            <form action="/admin/Receitas?_method=PUT" method="POST">
+            <form action="/admin/Receitas?_method=PUT" method="POST" enctype="multipart/form-data">
                 <div class="create_header">
                     <p>Editando Receita</p>
                     <input type="hidden" name="id" value="{{ recipe.id }}">

@@ -178,14 +178,17 @@ module.exports = {
     async put(req, res) {
         const keys = Object.keys(req.body)
         
+        
         for (key of keys) {
-            if (req.body[key] == "" != "removed_files") {
+            if (req.body[key] == ""  && key != "removed_files" && key !="photos") {
                 return res.send("porfavor preencha todos os campos")
             }
         }
-
-        if(req.files.length != 0){
+        console.log(req.files.length)
+        if(req.files.length != 0){     
+              
               const oldFiles = await Recipe.files(req.body.id)
+              
               const totalFiles = oldFiles.rows.length + req.files.length
               
               if(totalFiles <= 6){
@@ -194,8 +197,8 @@ module.exports = {
                   await Promise.all(newFilesPromise)
               }
         }
-
         if(req.body.removed_files){
+       
             const removedFiles = req.body.removed_files.split(",")
             const lastIndex = removedFiles.length - 1
             removedFiles.splice(lastIndex, 1)
