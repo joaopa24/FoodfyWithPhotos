@@ -184,7 +184,17 @@ module.exports = {
                 return res.send("porfavor preencha todos os campos")
             }
         }
-       
+        if(req.body.removed_files){
+            const removedFiles = req.body.removed_files.split(",")
+         
+            const lastIndex = (removedFiles.length - 1)
+          
+            removedFiles.splice(lastIndex, 1)
+            
+            const removedFilesPromise = removedFiles.map(id => File.delete(id))
+            
+            await Promise.all(removedFilesPromise)
+        }
         if(req.files.length != 0){     
               
               const oldFiles = await Recipe.files(req.body.id)
@@ -205,18 +215,6 @@ module.exports = {
                   
                   await Promise.all(recipeFiles)
               }
-        }
-        if(req.body.removed_files){
-            const removedFiles = req.body.removed_files.split(",")
-         
-            const lastIndex = (removedFiles.length - 1)
-          
-            removedFiles.splice(lastIndex, 1)
-            
-
-            const removedFilesPromise = removedFiles.map(id => File.delete(id))
-            
-            await Promise.all(removedFilesPromise)
         }
         
         await Recipe.update(req.body)
