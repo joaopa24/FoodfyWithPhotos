@@ -42,8 +42,7 @@ module.exports = {
             ingredients=($3),
             preparation=($4),
             information=($5),
-            created_at=($6)
-            WHERE id = $7
+            WHERE id = $6
      `
      const values = [
             data.chef, 
@@ -51,7 +50,6 @@ module.exports = {
             data.ingredients,
             data.preparation,
             data.textarea,
-            date(Date.now()).iso,
             data.id
      ] 
 
