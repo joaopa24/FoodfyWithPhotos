@@ -164,7 +164,6 @@ module.exports = {
         const recipe_id = results.rows[0].id 
      
         const filesPromise = req.files.map(file => File.create({...file}))
-        results = await filesPromise[0]
 
         const filesResults =  await Promise.all(filesPromise)
         const recipeFiles = filesResults.map(file => {
@@ -184,6 +183,7 @@ module.exports = {
                 return res.send("porfavor preencha todos os campos")
             }
         }
+
         if(req.body.removed_files){
             const removedFiles = req.body.removed_files.split(",")
          
@@ -195,6 +195,7 @@ module.exports = {
             
             await Promise.all(removedFilesPromise)
         }
+
         if(req.files.length != 0){     
               
               const oldFiles = await Recipe.files(req.body.id)
@@ -204,8 +205,6 @@ module.exports = {
               if(totalFiles <= 6){
                   const recipe_id = req.body.id
                   const newFilesPromise = req.files.map(file => File.create({...file}))
-
-                  results = await newFilesPromise[0]
 
                   const filesResults = await Promise.all(newFilesPromise)
                   const recipeFiles = filesResults.map(file => {
