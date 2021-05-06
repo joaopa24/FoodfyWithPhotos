@@ -37,7 +37,7 @@ module.exports = {
             const recipeFile = recipesFiles.rows[0]
             const file = await db.query(`SELECT * FROM files WHERE id = $1`,[recipeFile.file_id])
 
-            fs.unlinkSync(file.path)
+            fs.unlinkSync(file.rows[0].path)
 
             await db.query(`DELETE FROM recipe_files WHERE recipe_files.file_id = $1`,[id])
             
