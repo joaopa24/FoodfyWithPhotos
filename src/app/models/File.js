@@ -36,16 +36,13 @@ module.exports = {
             const recipesFiles = await db.query(`SELECT * FROM recipe_files WHERE id = $1`,[id])
            
             const recipeFile = recipesFiles.rows[0]
-            console.log(recipeFile)
-            
-            console.log(recipeFile.file_id)
+     
             const file = await db.query(`SELECT * FROM files WHERE id = $1`,[recipeFile.file_id])
 
             fs.unlinkSync(file.rows[0].path)
             
-            console.log('1')
             await db.query(`DELETE FROM recipe_files WHERE id = ${id}`)
-            console.log('2')
+
             return db.query(`DELETE FROM files WHERE id = $1`, [recipeFile.file_id]) 
         }catch(err){
             console.log(err)
