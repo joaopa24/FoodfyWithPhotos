@@ -104,5 +104,13 @@ module.exports = {
         } catch(err){
             console.log(err)
         }
+     },
+     async Allfiles(){
+        try {
+            const results = await db.query(`SELECT * FROM files`)
+            return results
+        } catch(err){
+            console.log(err)
+        }
      }
 }
