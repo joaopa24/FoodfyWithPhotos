@@ -103,7 +103,15 @@ module.exports = {
         results = await Recipe.chefsOption()
         const chefsOptions = results.rows
 
-        return res.render("Admin/index", { chefsOptions, recipes })
+        results = await Recipe.Allfiles()
+        
+        const files = results.rows.map(file => ({
+            ...file,
+            src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
+        }))
+
+
+        return res.render("Admin/index", { chefsOptions, recipes, files })
     },
     async create(req, res) {
 

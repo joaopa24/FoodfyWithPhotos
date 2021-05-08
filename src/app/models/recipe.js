@@ -108,6 +108,7 @@ module.exports = {
      async Allfiles(){
         try {
             const results = await db.query(`SELECT * FROM files`)
+            
             return results
         } catch(err){
             console.log(err)
