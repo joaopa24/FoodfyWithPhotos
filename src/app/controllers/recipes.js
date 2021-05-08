@@ -1,5 +1,6 @@
 const Recipe = require("../models/recipe")
 const File = require("../models/file")
+const { files } = require("../models/recipe")
 
 module.exports = {
     async home(req, res) {
@@ -97,21 +98,28 @@ module.exports = {
         return res.render("receita", { chefsOptions, recipe })
     },
     async index(req, res) {
-        let results = await Recipe.all()
-        const recipes = results.rows
-
-        results = await Recipe.chefsOption()
+        let results = await Recipe.chefsOption()
         const chefsOptions = results.rows
 
-        results = await Recipe.Allfiles()
-        
-        const files = results.rows.map(file => ({
-            ...file,
-            src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
-        }))
+        results = await Recipe.all()
+        let recipes = results.rows
 
+        const recipesPromise = recipes.map(async recipe => {
+            results = await Recipe.files(recipe.id)
 
-        return res.render("Admin/index", { chefsOptions, recipes, files })
+            const files = results.rows.map(file => ({
+                ...file,
+                src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
+            }))
+
+            recipe.image = files[0]
+
+            return recipe
+        })
+
+        const EachRecipe = await Promise.all(recipesPromise)
+
+        return res.render("Admin/index", { chefsOptions, recipes: EachRecipe })
     },
     async create(req, res) {
 
@@ -217,7 +225,7 @@ module.exports = {
             const lastIndex = removedFiles.length - 1
 
             removedFiles.splice(lastIndex, 1)
-            
+
             const removedFilesPromise = removedFiles.map(file => File.delete(file))
 
             await Promise.all(removedFilesPromise)
