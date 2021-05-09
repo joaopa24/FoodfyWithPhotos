@@ -6,6 +6,21 @@ module.exports = {
         let results = await Chef.all()
         const Chefs = results.rows
 
+        const chefsPromise = Chefs.map(async chef => {
+            results = await Chef.files(chef.id)
+
+            const files = results.rows.map(file => ({
+                ...file,
+                src:`${req.protocol}://${req.headers.host}${file.path.replace("public","")}`
+            }))
+
+            Chef.image = files[0]
+
+            return chef
+        })
+
+        const EachChef = await Promise.all(chefsPromise)
+
         return res.render("chef", { Chefs })
     },
     async chefsAdmin(req, res) {
