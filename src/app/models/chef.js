@@ -43,18 +43,18 @@ module.exports = {
 
         return db.query(query , values)
     },
-    update(data){
+    update(data,new_id_photo){
         const query = `
         UPDATE chefs SET 
-            avatar_url=($1),
-            name=($2),
+            name=($1),
+            file_id=($2),
             created_at=($3)
-            Where id = $4
+            WHERE id = $4
         `
         
         const values = [
-            data.avatar,
             data.nome_chef,
+            data.file_id,
             date(Date.now()).iso,
             data.id
         ]

@@ -2,7 +2,7 @@
 {% block content %}
     <div class="create_content">
         <div class="forms">
-            <form action="/admin/Chefs?_method=PUT" method="post">
+            <form action="/admin/Chefs?_method=PUT" method="post" enctype="multipart/form-data">
                 <div class="create_header">
                     <p>Criando Chef</p>
                     <input type="hidden" name="id" value="{{Chef.id}}">

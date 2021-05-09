@@ -11,7 +11,7 @@ module.exports = {
 
             const files = results.rows.map(file => ({
                 ...file,
-                src:`${req.protocol}://${req.headers.host}${file.path.replace("public","")}`
+                src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
             }))
 
             Chef.image = files[0]
@@ -30,13 +30,13 @@ module.exports = {
         return res.render("Admin/chefs", { Chefs })
     },
     async chefAdmin(req, res) {
-    
+
         results = await Chef.find(req.params.id).then()
         const chef = results.rows[0] // Não colocar Chef porque buga , já que é o mesmo que o Chef do model
-    
+
         results = await Chef.findrecipes()
         const chef_recipes = results.rows
- 
+
         results = await Chef.allrecipes()
         const recipes = results.rows
 
@@ -45,7 +45,7 @@ module.exports = {
     async chefAdmin_edit(req, res) {
         let results = await Chef.find(req.params.id)
         const chef = results.rows[0]
-        
+
         return res.render('Admin/editchef', { Chef: chef })
     },
     chefsCreate(req, res) {
@@ -60,32 +60,35 @@ module.exports = {
             }
         }
 
-        if (req.files.length == 0){
+        if (req.files.length == 0) {
             return res.send('Porfavor enfie uma imagem')
         }
 
-        const filePromise = req.files.map(file => File.create({...file}))
+        const filePromise = req.files.map(file => File.create({ ...file }))
         let results = await filePromise[0]
         const file_id = results.rows[0].id
 
-        results = await Chef.create(req.body,file_id)
+        results = await Chef.create(req.body, file_id)
         const chefId = results.rows[0].id
 
         return res.redirect(`/admin/Chefs/${chefId}`)
     },
     async put(req, res) {
         const keys = Object.keys(req.body)
+        const chef_id = req.body.id
+
 
         for (key of keys) {
             if (req.body[key] == "") {
                 return res.send("Preencha todos os campos!")
             }
         }
-        
-        let results = await Chef.update(req.body)
-        const chefId = results.rows[0].id
 
-        return res.redirect(`/admin/Chefs/${chefId}`)
+        console.log(req.files)
+
+        await Chef.update(req.body)
+
+        return res.redirect(`/admin/Chefs/${chef_id}`)
     },
     async delete(req, res) {
         await Product.delete(req.body.id)
