@@ -46,7 +46,15 @@ module.exports = {
         let results = await Chef.find(req.params.id)
         const chef = results.rows[0]
 
-        return res.render('Admin/editchef', { Chef: chef })
+        results = await Chef.files(chef.file_id)
+        const files = results.rows.map(file => ({
+            ...file,
+            src:`${req.protocol}://${req.headers.host}${file.path.replace("public","")}`
+        }))
+
+        console.log(files)
+
+        return res.render('Admin/editchef', { Chef: chef, files })
     },
     chefsCreate(req, res) {
         return res.render('Admin/createChef')
@@ -84,7 +92,6 @@ module.exports = {
             }
         }
 
-        console.log(req.files)
 
         await Chef.update(req.body)
 

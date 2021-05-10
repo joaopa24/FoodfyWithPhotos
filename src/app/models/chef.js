@@ -65,6 +65,6 @@ module.exports = {
         return db.query(`DELETE FROM chefs WHERE id = $1`, [id])
     },
     files(id){
-       return db.query('SELECT * FROM files WHERE file_id = $1',[id])
+       return db.query('SELECT * FROM files WHERE id = $1',[id])
     }
 }
