@@ -88,8 +88,23 @@ module.exports = {
 
 
         for (key of keys) {
-            if (req.body[key] == "") {
+            console.log(key)
+            if (req.body[key] == "" && key != "removed_files") {
                 return res.send("Preencha todos os campos!")
+            }
+        }
+
+        if(req.files.length != 0){
+            const oldFiles = await Chef.files(chef_id)
+
+            const totalFiles = oldFiles.rows.length + req.files.length
+
+            if(totalFiles < 1){
+                const newFilesPromise = req.files.map(file => File.create({...file}))
+        
+                const chefFiles = await Promise.all(newFilesPromise)                
+
+                
             }
         }
 

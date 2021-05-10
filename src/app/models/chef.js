@@ -54,7 +54,7 @@ module.exports = {
         
         const values = [
             data.nome_chef,
-            data.file_id,
+            new_id_photo,
             date(Date.now()).iso,
             data.id
         ]
@@ -64,7 +64,17 @@ module.exports = {
     delete(id){
         return db.query(`DELETE FROM chefs WHERE id = $1`, [id])
     },
-    files(id){
-       return db.query('SELECT * FROM files WHERE id = $1',[id])
+    async files(id){
+        try {
+            const results = await db.query(`SELECT *
+            FROM files
+            LEFT JOIN chefs
+            ON (files.id = chefs.file_id)
+            WHERE chefs.file_id = $1`, [id])
+ 
+            return results
+        } catch(err){
+            console.log(err)
+        }
     }
 }
