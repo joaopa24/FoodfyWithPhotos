@@ -47,6 +47,7 @@ module.exports = {
         const chef = results.rows[0]
 
         results = await Chef.files(chef.file_id)
+        
         const files = results.rows.map(file => ({
             ...file,
             src:`${req.protocol}://${req.headers.host}${file.path.replace("public","")}`
