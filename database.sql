@@ -1,17 +1,17 @@
 CREATE TABLE "chefs" (
   "id" SERIAL PRIMARY KEY,
-  "name" text,
-  "file_id" int UNIQUE,
+  "name" text NOT NULL,
+  "file_id" int UNIQUE NOT NULL,
   "created_at" date
 );
 
 CREATE TABLE "recipes" (
   "id" SERIAL PRIMARY KEY,
   "chef_id" int NOT NULL,
-  "title" text,
-  "ingredients" text[],
-  "preparation" text[],
-  "information" text,
+  "title" text NOT NULL,
+  "ingredients" text[] NOT NULL,
+  "preparation" text[] NOT NULL,
+  "information" text NOT NULL,
   "created_at" date
 );
 
