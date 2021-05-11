@@ -43,7 +43,7 @@ module.exports = {
 
         return db.query(query , values)
     },
-    update(data,new_id_photo){
+    update(data,newFileId){
         const query = `
         UPDATE chefs SET 
             name=($1),
@@ -53,8 +53,8 @@ module.exports = {
         `
         
         const values = [
-            data.nome_chef,
-            new_id_photo,
+            data.name,
+            newFileId,
             date(Date.now()).iso,
             data.id
         ]
@@ -66,12 +66,8 @@ module.exports = {
     },
     async files(id){
         try {
-            const results = await db.query(`SELECT *
-            FROM files
-            LEFT JOIN chefs
-            ON (files.id = chefs.file_id)
-            WHERE chefs.file_id = $1`, [id])
- 
+            const results = await db.query(`SELECT * FROM files WHERE id = $1`, [id])
+
             return results
         } catch(err){
             console.log(err)

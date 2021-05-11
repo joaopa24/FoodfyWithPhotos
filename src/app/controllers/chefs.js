@@ -43,17 +43,18 @@ module.exports = {
         return res.render('Admin/chef', { Chef: chef, chef_recipes, recipes })
     },
     async chefAdmin_edit(req, res) {
-        let results = await Chef.find(req.params.id)
+        const { id } = req.params
+        
+        let results = await Chef.find(id)
         const chef = results.rows[0]
 
         results = await Chef.files(chef.file_id)
-        
+        console.log(results.rows)
+
         const files = results.rows.map(file => ({
             ...file,
             src:`${req.protocol}://${req.headers.host}${file.path.replace("public","")}`
         }))
-
-        console.log(files)
 
         return res.render('Admin/editchef', { Chef: chef, files })
     },
@@ -86,31 +87,44 @@ module.exports = {
         const keys = Object.keys(req.body)
         const chef_id = req.body.id
 
-
         for (key of keys) {
-            console.log(key)
+            
             if (req.body[key] == "" && key != "removed_files") {
                 return res.send("Preencha todos os campos!")
             }
         }
 
+        let results = await Chef.find(chef_id)
+        let file_id = results.rows[0].file_id
+
         if(req.files.length != 0){
             const oldFiles = await Chef.files(chef_id)
 
             const totalFiles = oldFiles.rows.length + req.files.length
-
-            if(totalFiles < 1){
+            
+            if(totalFiles < 2){
                 const newFilesPromise = req.files.map(file => File.create({...file}))
-        
-                const chefFiles = await Promise.all(newFilesPromise)                
-
                 
+                const results = await newFilesPromise[0]
+                file_id = results.rows[0].id
             }
         }
 
+        if(req.body.removed_files){
+            const removedFiles = req.body.removed_files.split(",")
 
-        await Chef.update(req.body)
+            const lastIndex = removedFiles.length - 1 
+            
+            removedFiles.splice(lastIndex, 1)
 
+            const removedFilesPromise = removedFiles.map(id => File.delete(id))
+
+            await Promise.all(removedFilesPromise)
+        }
+        
+        console.log(file_id)
+        await Chef.update(req.body,file_id)
+        
         return res.redirect(`/admin/Chefs/${chef_id}`)
     },
     async delete(req, res) {

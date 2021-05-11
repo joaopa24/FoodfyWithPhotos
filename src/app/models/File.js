@@ -32,7 +32,6 @@ module.exports = {
     },
     async delete(id){ 
         try{
-            console.log(id)
             const recipesFiles = await db.query(`SELECT * FROM recipe_files WHERE id = $1`,[id])
            
             const recipeFile = recipesFiles.rows[0]
@@ -47,5 +46,13 @@ module.exports = {
         }catch(err){
             console.log(err)
         }
+    },
+    async ChefDeleteFile(id){
+          try{
+
+          }catch(err){
+              console.log(err)
+          }
     }
+
 }
