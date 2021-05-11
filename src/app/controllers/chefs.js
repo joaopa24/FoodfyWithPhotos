@@ -49,7 +49,6 @@ module.exports = {
         const chef = results.rows[0]
 
         results = await Chef.files(chef.file_id)
-        console.log(results.rows)
 
         const files = results.rows.map(file => ({
             ...file,
@@ -114,15 +113,12 @@ module.exports = {
             const removedFiles = req.body.removed_files.split(",")
 
             const lastIndex = removedFiles.length - 1 
-            
+
             removedFiles.splice(lastIndex, 1)
 
-            const removedFilesPromise = removedFiles.map(id => File.delete(id))
-
-            await Promise.all(removedFilesPromise)
+            await removedFiles.map(id => File.chefDelete(id))   
         }
         
-        console.log(file_id)
         await Chef.update(req.body,file_id)
         
         return res.redirect(`/admin/Chefs/${chef_id}`)
