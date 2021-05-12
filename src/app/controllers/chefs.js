@@ -125,6 +125,8 @@ module.exports = {
             await removedFiles.map(id => File.chefDelete(id))    
         }
         
+        await Chef.update(req.body,file_id)
+        
         return res.redirect(`/admin/Chefs/${chef_id}`)
     },
     async delete(req, res) {
