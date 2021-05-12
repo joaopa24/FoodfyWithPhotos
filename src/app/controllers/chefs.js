@@ -96,20 +96,6 @@ module.exports = {
         let results = await Chef.find(chef_id)
         let file_id = results.rows[0].file_id
         
-        if(req.body.removed_files){
-            const removedFiles = req.body.removed_files.split(",")
-
-            const lastIndex = removedFiles.length - 1 
-
-            removedFiles.splice(lastIndex, 1)
-            
-            if(req.files.length == 0){
-                return res.send('Envie pelo menos uma imagem!')
-            }
-            
-            await removedFiles.map(id => File.chefDelete(id))    
-        }
-
         if(req.files.length != 0){
             const oldFiles = await Chef.files(chef_id)
 
@@ -123,7 +109,21 @@ module.exports = {
             }
         }
 
-        await Chef.update(req.body,file_id)
+        if(req.body.removed_files){
+            const removedFiles = req.body.removed_files.split(",")
+
+            const lastIndex = removedFiles.length - 1 
+
+            removedFiles.splice(lastIndex, 1)
+            
+            if(req.files.length == 0){
+                return res.send('Envie pelo menos uma imagem!')
+            }
+
+            await Chef.update(req.body,file_id)
+
+            await removedFiles.map(id => File.chefDelete(id))    
+        }
         
         return res.redirect(`/admin/Chefs/${chef_id}`)
     },
