@@ -8,13 +8,13 @@ module.exports = {
         const Chefs = results.rows
 
         const chefsPromise = Chefs.map(async chef => {
-            results = await Chef.files(chef.id)
+            results = await Chef.Getfiles(chef.id)
 
             const files = results.rows.map(file => ({
                 ...file,
                 src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
             }))
-        
+
             chef.image = files[0]
             return chef
         })
@@ -27,11 +27,25 @@ module.exports = {
         let results = await Chef.all()
         const Chefs = results.rows
 
-        return res.render("Admin/chefs", { Chefs })
+        const chefsPromise = Chefs.map(async chef => {
+            results = await Chef.Getfiles(chef.id)
+
+            const files = results.rows.map(file => ({
+                ...file,
+                src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
+            }))
+
+            chef.image = files[0]
+            return chef
+        })
+ 
+        const EachChef = await Promise.all(chefsPromise)
+
+        return res.render("Admin/chefs", { Chefs: EachChef })
     },
     async chefAdmin(req, res) {
 
-        results = await Chef.find(req.params.id).then()
+        results = await Chef.find(req.params.id)
         const chef = results.rows[0] // Não colocar Chef porque buga , já que é o mesmo que o Chef do model
 
         results = await Chef.findrecipes()
@@ -48,14 +62,14 @@ module.exports = {
         let results = await Chef.find(id)
         const chef = results.rows[0]
 
-        results = await Chef.files(chef.file_id)
-
+        results = await Chef.Getfiles(chef.id)
+        
         const files = results.rows.map(file => ({
             ...file,
             src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
         }))
 
-        return res.render('Admin/editchef', { Chef: chef, files })
+        return res.render('Admin/editchef', { Chef:chef , files })
     },
     chefsCreate(req, res) {
         return res.render('Admin/createChef')
@@ -97,8 +111,8 @@ module.exports = {
         let file_id = results.rows[0].file_id
 
         if (req.files.length != 0) {
-            const oldFiles = await Chef.files(chef_id)
-
+            const oldFiles = await Chef.files(chef_id.file_id)
+        
             const totalFiles = oldFiles.rows.length + req.files.length
 
             if (totalFiles < 2) {
@@ -119,13 +133,13 @@ module.exports = {
             if (req.files.length == 0) {
                 return res.send('Envie pelo menos uma imagem!')
             }
-
-            await Chef.update(req.body, file_id)
+            
+            await Chef.update(req.body,file_id)
 
             await removedFiles.map(id => File.chefDelete(id))
         }
 
-        await Chef.update(req.body, file_id)
+        await Chef.update(req.body,file_id)
 
         return res.redirect(`/admin/Chefs/${chef_id}`)
     },

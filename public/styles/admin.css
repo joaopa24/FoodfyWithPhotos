@@ -347,8 +347,8 @@ button[type="submit"] a{
     border-radius: 50%;
     background-size: cover;
 }
-.image_card_chef{
-    background-size: cover;
+.image_card_chef img{
+    object-fit: cover;
     width: 64px;
     height: 64px;
     border-radius: 50%;
