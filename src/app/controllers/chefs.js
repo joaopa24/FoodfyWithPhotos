@@ -1,3 +1,4 @@
+const chef = require("../models/chef")
 const Chef = require("../models/chef")
 const File = require("../models/file")
 
@@ -13,15 +14,14 @@ module.exports = {
                 ...file,
                 src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
             }))
-
-            Chef.image = files[0]
-
+        
+            chef.image = files[0]
             return chef
         })
-
+ 
         const EachChef = await Promise.all(chefsPromise)
-
-        return res.render("chef", { Chefs })
+ 
+        return res.render("chef", { Chefs: EachChef })
     },
     async chefsAdmin(req, res) {
         let results = await Chef.all()
@@ -44,7 +44,7 @@ module.exports = {
     },
     async chefAdmin_edit(req, res) {
         const { id } = req.params
-        
+
         let results = await Chef.find(id)
         const chef = results.rows[0]
 
@@ -52,7 +52,7 @@ module.exports = {
 
         const files = results.rows.map(file => ({
             ...file,
-            src:`${req.protocol}://${req.headers.host}${file.path.replace("public","")}`
+            src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
         }))
 
         return res.render('Admin/editchef', { Chef: chef, files })
@@ -87,7 +87,7 @@ module.exports = {
         const chef_id = req.body.id
 
         for (key of keys) {
-            
+
             if (req.body[key] == "" && key != "removed_files") {
                 return res.send("Preencha todos os campos!")
             }
@@ -95,38 +95,38 @@ module.exports = {
 
         let results = await Chef.find(chef_id)
         let file_id = results.rows[0].file_id
-        
-        if(req.files.length != 0){
+
+        if (req.files.length != 0) {
             const oldFiles = await Chef.files(chef_id)
 
             const totalFiles = oldFiles.rows.length + req.files.length
-            
-            if(totalFiles < 2){
-                const newFilesPromise = req.files.map(file => File.create({...file}))
-                
+
+            if (totalFiles < 2) {
+                const newFilesPromise = req.files.map(file => File.create({ ...file }))
+
                 const results = await newFilesPromise[0]
                 file_id = results.rows[0].id
             }
         }
 
-        if(req.body.removed_files){
+        if (req.body.removed_files) {
             const removedFiles = req.body.removed_files.split(",")
 
-            const lastIndex = removedFiles.length - 1 
+            const lastIndex = removedFiles.length - 1
 
             removedFiles.splice(lastIndex, 1)
-            
-            if(req.files.length == 0){
+
+            if (req.files.length == 0) {
                 return res.send('Envie pelo menos uma imagem!')
             }
 
-            await Chef.update(req.body,file_id)
+            await Chef.update(req.body, file_id)
 
-            await removedFiles.map(id => File.chefDelete(id))    
+            await removedFiles.map(id => File.chefDelete(id))
         }
-        
-        await Chef.update(req.body,file_id)
-        
+
+        await Chef.update(req.body, file_id)
+
         return res.redirect(`/admin/Chefs/${chef_id}`)
     },
     async delete(req, res) {

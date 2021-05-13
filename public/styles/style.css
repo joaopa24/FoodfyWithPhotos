@@ -390,11 +390,11 @@ header a:hover{
      display: flex;
      margin-bottom: 30px;
  }
- .image_card_chef{
+ .image_card_chef img{
      width: 64px;
      height: 64px;
      border-radius: 50%;
-     background-size: cover;
+     object-fit: cover;
  }
  .name_chef{
      box-sizing: border-box;

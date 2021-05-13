@@ -5,7 +5,8 @@
             <div class="chefs_cards">
                 {% for Chef in Chefs %}
                     <div class="chef_card">
-                        <div class="image_card_chef" style="background-image: url({{ Chef.avatar_url }})">
+                        <div class="image_card_chef">
+                            <img src="{{Chef.image.src}}" alt="">
                         </div>
                         <div class="name_chef">
                             <p>{{ Chef.name }}</p>
