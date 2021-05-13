@@ -54,7 +54,14 @@ module.exports = {
         results = await Chef.allrecipes()
         const recipes = results.rows
 
-        return res.render('Admin/chef', { Chef: chef, chef_recipes, recipes })
+        results = await Chef.Getfiles(chef.id)
+        
+        const files = results.rows.map(file => ({
+            ...file,
+            src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
+        }))
+
+        return res.render('Admin/chef', { Chef: chef, chef_recipes, recipes, files })
     },
     async chefAdmin_edit(req, res) {
         const { id } = req.params
@@ -120,6 +127,7 @@ module.exports = {
 
                 const results = await newFilesPromise[0]
                 file_id = results.rows[0].id
+                console.log(file_id)
             }
         }
 

@@ -43,7 +43,7 @@ module.exports = {
 
         return db.query(query, values)
     },
-    update(data, newFileId) {
+    async update(data, newFileId) {
         const query = `
         UPDATE chefs SET 
             name=($1),
