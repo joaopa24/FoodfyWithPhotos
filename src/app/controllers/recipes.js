@@ -105,7 +105,7 @@ module.exports = {
         let recipes = results.rows
 
         const recipesPromise = recipes.map(async recipe => {
-            results = await Recipe.files(recipe.id)
+            results = await Recipe.RecipeFiles(recipe.id)
 
             const files = results.rows.map(file => ({
                 ...file,
@@ -135,7 +135,7 @@ module.exports = {
         results = await Recipe.chefsOption()
         const chefsOptions = results.rows
 
-        results = await Recipe.files(recipe.id)
+        results = await Recipe.RecipeFiles(recipe.id)
 
         const files = results.rows.map(file => ({
             ...file,
@@ -153,7 +153,7 @@ module.exports = {
         results = await Recipe.find(id)
         const recipe = results.rows[0]
 
-        results = await Recipe.files(id)
+        results = await Recipe.RecipeFiles(id)
 
         const files = results.rows.map(file => ({
             ...file,

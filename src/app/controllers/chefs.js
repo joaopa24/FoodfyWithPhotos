@@ -55,7 +55,7 @@ module.exports = {
         const recipes = results.rows
 
         const recipesPromise = recipes.map(async recipe => {
-            results = await Recipe.files(recipe.id)
+            results = await Recipe.RecipeFiles(recipe.id)
 
             const files = results.rows.map(file => ({
                 ...file,
