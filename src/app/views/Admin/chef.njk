@@ -32,7 +32,7 @@
                            {% if recipe.chef_id == Chef.id %}
                             <div class="card" id="{{recipe.id}}">
                                 <div class="card_image">
-                                    <img src="{{recipe.image}}" alt="{{recipe.id}}">
+                                    <img src="{{recipe.image.src}}" alt="{{recipe.id}}">
                                 </div>
                                 <div class="card_info">
                                     <p>{{recipe.title}}</p>

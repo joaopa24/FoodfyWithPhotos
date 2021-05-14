@@ -1,6 +1,6 @@
-const chef = require("../models/chef")
 const Chef = require("../models/chef")
 const File = require("../models/file")
+const Recipe = require("../models/recipe")
 
 module.exports = {
     async chefs(req, res) {
@@ -54,15 +54,30 @@ module.exports = {
         results = await Chef.allrecipes()
         const recipes = results.rows
 
+        const recipesPromise = recipes.map(async recipe => {
+            results = await Recipe.files(recipe.id)
+
+            const files = results.rows.map(file => ({
+                ...file,
+                src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
+            }))
+
+            recipe.image = files[0]
+
+            return recipe
+        })
+
+        const EachRecipe = await Promise.all(recipesPromise)
+        console.log(EachRecipe)
+
         results = await Chef.Getfiles(chef.id)
         
         const files = results.rows.map(file => ({
             ...file,
             src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
         }))
-        console.log(files)
 
-        return res.render('Admin/chef', { Chef: chef, chef_recipes, recipes, files })
+        return res.render('Admin/chef', { Chef: chef, chef_recipes, recipes: EachRecipe, files })
     },
     async chefAdmin_edit(req, res) {
         const { id } = req.params
