@@ -134,6 +134,7 @@ header a:hover{
      height: 140px;
      border-radius: 15px;
      margin-bottom: 20px;
+     object-fit: cover;
      
 }
 .card_title h1{

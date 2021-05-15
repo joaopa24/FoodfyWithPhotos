@@ -21,7 +21,22 @@ module.exports = {
         results = await Recipe.paginate(params)
         const recipes = results.rows
 
-        return res.render("home", { chefsOptions, recipes, filter })
+        const recipesPromise = recipes.map(async recipe => {
+            results = await Recipe.RecipeFiles(recipe.id)
+
+            const files = results.rows.map(file => ({
+                ...file,
+                src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
+            }))
+
+            recipe.image = files[0]
+
+            return recipe
+        })
+
+        const EachRecipe = await Promise.all(recipesPromise)
+
+        return res.render("home", { chefsOptions, recipes:EachRecipe , filter })
     },
     async recipes(req, res) {
         let { filter, page, limit } = req.query
