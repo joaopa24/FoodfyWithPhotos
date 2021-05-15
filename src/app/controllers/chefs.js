@@ -68,7 +68,6 @@ module.exports = {
         })
 
         const EachRecipe = await Promise.all(recipesPromise)
-        console.log(EachRecipe)
 
         results = await Chef.Getfiles(chef.id)
         
@@ -134,7 +133,7 @@ module.exports = {
         let file_id = results.rows[0].file_id
 
         if (req.files.length != 0) {
-            const oldFiles = await Chef.files(chef_id.file_id)
+            const oldFiles = await Chef.Getfiles(chef_id.file_id)
         
             const totalFiles = oldFiles.rows.length + req.files.length
 
@@ -143,7 +142,6 @@ module.exports = {
 
                 const results = await newFilesPromise[0]
                 file_id = results.rows[0].id
-                console.log(file_id)
             }
         }
 

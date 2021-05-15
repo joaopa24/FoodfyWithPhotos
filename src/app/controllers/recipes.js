@@ -193,7 +193,6 @@ module.exports = {
     async put(req, res) {
         const keys = Object.keys(req.body)
 
-
         for (key of keys) {
             if (req.body[key] == "" && key != "removed_files" && key != "photos") {
                 return res.send("porfavor preencha todos os campos")
@@ -201,7 +200,7 @@ module.exports = {
         }
 
         if (req.files.length != 0) {
-            const oldFiles = await Recipe.files(req.body.id)
+            const oldFiles = await Recipe.RecipeFiles(req.body.id)
 
             const totalFiles = oldFiles.rows.length + req.files.length
 
