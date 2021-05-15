@@ -10,8 +10,21 @@
                     <a href="/admin/Receitas/{{recipe.id}}/edit">Editar Receita</a>
                 </div>
             </div>
+            <div class="gallery">
+                <div class="highlight">
+                    {% if not files[0] %}
+                 <img src="http://placehold.it/500x500?text=PRODUTO SEM FOTO" alt="">
+                {% else %}
+                <img src="{{files[0].src}}" alt="" srcset="">
+                {% endif %}
+                </div>
+                <div class="gallery-preview">
+                    {% for image in files %}
+                         <img src="{{image.src}}" alt="{{image.name}}"{% if loop.index0 == 0 %}class="active"{% endif %}>
+                    {% endfor %}
+                </div>
+            </div>
             <div class="main_image_show">
-                <img src="{{files[0].src}}" alt="">
             </div>
             <div class="show_info">
                 <div class="title">
