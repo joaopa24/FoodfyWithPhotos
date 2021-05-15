@@ -62,8 +62,23 @@ module.exports = {
             total: Math.ceil(recipes[0].total / limit),
             page
         }
+        
+        const recipesPromise = recipes.map(async recipe => {
+            results = await Recipe.RecipeFiles(recipe.id)
 
-        return res.render("receitas", { chefsOptions, recipes, pagination, filter })
+            const files = results.rows.map(file => ({
+                ...file,
+                src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
+            }))
+
+            recipe.image = files[0]
+
+            return recipe
+        })
+
+        const EachRecipe = await Promise.all(recipesPromise)
+
+        return res.render("receitas", { chefsOptions, recipes:EachRecipe, pagination, filter })
     },
     async results(req, res) {
         let { filter, page, limit } = req.query
