@@ -526,9 +526,10 @@ button[type="submit"] a{
 }
 .highlight img{
     width: 100%;
-    height: 320px;
+    height: 350px;
     border-radius: 15px;
     object-fit: cover;
+    cursor: zoom-in;
 }
 .gallery-preview{
     margin-top: 10px;
@@ -540,4 +541,12 @@ button[type="submit"] a{
     width: 70px;
     height: 70px;
     border-radius: 5px;
+    opacity: 0.5;
+    cursor: pointer;
+
+    transition: 200ms;
+}
+.gallery-preview img:hover,
+.gallery-preview img.active{
+    opacity: 1;
 }
