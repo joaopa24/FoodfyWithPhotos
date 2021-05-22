@@ -79,8 +79,11 @@ module.exports = {
             query = `
             SELECT recipes.*,${totalQuery}
             FROM recipes
+            
             ${filterQuery}
+            ORDER BY created_at DESC
             LIMIT $1 OFFSET $2 
+            
             `
             
             const results = await db.query(query, [limit,offset])
