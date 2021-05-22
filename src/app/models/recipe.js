@@ -95,6 +95,46 @@ module.exports = {
         }
             
     },
+    async paginateResults(params){
+        try{
+            const { filter , limit, offset } = params
+            
+            let query = "",
+                filterQuery = "",
+                totalQuery = `(
+                    SELECT count(*) FROM recipes
+                ) AS total`
+
+            if(filter){
+                filterQuery = `${query}
+                WHERE recipes.title ILIKE '%${filter}%'
+                
+                `
+                totalQuery = `(
+                    SELECT count(*) FROM recipes
+                    ${filterQuery}
+                ) as total`
+            }
+            
+            query = `
+            SELECT recipes.*,${totalQuery}
+            FROM recipes
+            
+            ${filterQuery}
+            ORDER BY updated_at ASC
+            LIMIT $1 OFFSET $2 
+            
+            `
+            
+            const results = await db.query(query, [limit,offset])
+
+            return results
+        }
+        catch(err){
+            console.error(err)
+        }
+            
+    },
     async files(id){
         try {
             const results = await db.query(`SELECT * FROM files WHERE id = $1`, [id])

@@ -97,7 +97,7 @@ module.exports = {
             offset,
         }
 
-        results = await Recipe.paginate(params)
+        results = await Recipe.paginateResults(params)
         const recipes = results.rows
 
         const recipesPromise = recipes.map(async recipe => {
