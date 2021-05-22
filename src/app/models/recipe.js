@@ -121,7 +121,7 @@ module.exports = {
             FROM recipes
             
             ${filterQuery}
-            ORDER BY updated_at ASC
+            ORDER BY updated_at DESC
             LIMIT $1 OFFSET $2 
             
             `
