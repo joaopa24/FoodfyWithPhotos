@@ -1,9 +1,9 @@
 module.exports = {
     date(timestamp){
         const date = new Date(timestamp)
-        const year = date.getUTCFullYear()
-        const month = `0${date.getUTCMonth() + 1}`.slice(-2) 
-        const day = `0${date.getUTCDate() + 1}`.slice(-2) 
+        const year = date.getUFullYear()
+        const month = `0${date.getMonth() + 1}`.slice(-2) 
+        const day = `0${date.getDate() + 1}`.slice(-2) 
 
         return {
             day,
